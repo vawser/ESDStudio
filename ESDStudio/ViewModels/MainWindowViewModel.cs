@@ -83,7 +83,14 @@ public class MainWindowViewModel : ViewModelBase
     {
         get
         {
-            return Project.Current.Name;
+            if(Project.Current == null)
+            {
+                return "";
+            }
+            else
+            {
+                return Project.Current.Name;
+            }
         }
     }
     
@@ -223,6 +230,39 @@ public class MainWindowViewModel : ViewModelBase
                 }
             }
         }
+
+        if (project.Game.Type is GameInfo.Game.ArmoredCore6)
+        {
+            string gameOodlePath = project.GameDirectory + @"\oo2core_8_win64.dll";
+            string localOodlePath = AppDomain.CurrentDomain.BaseDirectory + "oo2core_8_win64.dll";
+            if (!File.Exists(localOodlePath))
+            {
+                try
+                {
+                    File.Copy(gameOodlePath, localOodlePath);
+                }
+                catch (Exception e)
+                {
+                    ShowErrorMessageBox(e.Message);
+                    return;
+                }
+            }
+
+            string esdtool_ac6_OodlePath = AppDomain.CurrentDomain.BaseDirectory + @"esdtool_ac6\oo2core_8_win64.dll";
+            if (!File.Exists(esdtool_ac6_OodlePath))
+            {
+                try
+                {
+                    File.Copy(gameOodlePath, esdtool_ac6_OodlePath);
+                }
+                catch (Exception e)
+                {
+                    ShowErrorMessageBox(e.Message);
+                    return;
+                }
+            }
+        }
+
         Project.IsProjectLoaded = true;
         BNDViewModels.Clear();
         OpenTabs.Clear();
@@ -318,7 +358,11 @@ public class MainWindowViewModel : ViewModelBase
         {
             searchPattern += ".dcx";
         }
-        
+
+        // HACK: 
+        searchPattern = "m01_07_70_00.talkesdbnd.dcx";
+
+
         List<string> modTalkBNDNames = new();
         if (Directory.Exists(modDirectory + $"\\{Project.Current.Game.TalkPath}"))
         {
@@ -327,6 +371,7 @@ public class MainWindowViewModel : ViewModelBase
             foreach (string bndPath in bndPaths)
             {
                 string bndName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(bndPath));
+
                 modTalkBNDNames.Add(bndName);
                 BNDViewModels.Add(new BNDViewModel(bndPath, gameInfo));
             }

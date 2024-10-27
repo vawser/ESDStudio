@@ -297,14 +297,25 @@ public class ESDViewModel : ViewModelBase
             parentBND = ParentViewModel.GetTalkBND(Project.Current.ModDirectory, Project.Current.GameDirectory, out string BNDPath);
             ESDSourceName = Name;
         }
+
+        string esdtoolDir = "esdtool";
+        if(Project.Current.Game.Type == GameInfo.Game.EldenRing)
+        {
+            esdtoolDir = "esdtool_er";
+        }
+        if (Project.Current.Game.Type == GameInfo.Game.ArmoredCore6)
+        {
+            esdtoolDir = "esdtool_ac6";
+        }
+
         BinderFile BNDFile = parentBND.Files.First(x => x.Name.EndsWith(ESDSourceName + ".esd", StringComparison.OrdinalIgnoreCase));
         string cwd = AppDomain.CurrentDomain.BaseDirectory;
-        string tempESDFile = cwd + (Project.Current.Game.Type == GameInfo.Game.EldenRing ? "esdtool_er" : "esdtool") + $"\\{Name}.esd";
-        File.WriteAllBytes(tempESDFile, BNDFile.Bytes);
+        string tempESDFile = cwd + esdtoolDir + $"\\{Name}.esd";
+        File.WriteAllBytes(tempESDFile, BNDFile.Bytes.ToArray());
         bool success = RunESDTool($"{(Editor.UseGameDataFlags ? $"-{Project.Current.Game.Name} -basedir \"{Project.Current.GameDirectory}\" " : "")}-i {Name}.esd -writepy %e.esd.py");
         File.Delete(tempESDFile);
         if (success == false) return "";
-        string tempPyFile = cwd + (Project.Current.Game.Type == GameInfo.Game.EldenRing ? "esdtool_er" : "esdtool") + $"\\{Name}.esd.py";
+        string tempPyFile = cwd + esdtoolDir + $"\\{Name}.esd.py";
         string fileText = File.ReadAllText(tempPyFile);
         File.Delete(tempPyFile);
         return fileText;
@@ -325,8 +336,19 @@ public class ESDViewModel : ViewModelBase
                     enumValuePair.Item1.ToString(), false, true);
             }
         }
+
+        string esdtoolDir = "esdtool";
+        if (Project.Current.Game.Type == GameInfo.Game.EldenRing)
+        {
+            esdtoolDir = "esdtool_er";
+        }
+        if (Project.Current.Game.Type == GameInfo.Game.ArmoredCore6)
+        {
+            esdtoolDir = "esdtool_ac6";
+        }
+
         string cwd = AppDomain.CurrentDomain.BaseDirectory;
-        string tempPyFile = $"{cwd}" + (Project.Current.Game.Type == GameInfo.Game.EldenRing ? "esdtool_er" : "esdtool") + $"\\{Name}.esd.py";
+        string tempPyFile = $"{cwd}" + esdtoolDir + $"\\{Name}.esd.py";
         File.WriteAllText(tempPyFile, codeCopy);
         bool success = RunESDTool($"-{game} " +
                                   $"-basedir \"{gameDirectory}\" -esddir \"{gameDirectory}\\{Project.Current.Game.TalkPath}\" " +
@@ -347,13 +369,24 @@ public class ESDViewModel : ViewModelBase
     private bool RunESDTool(string arguments)
     {
         string cwd = AppDomain.CurrentDomain.BaseDirectory;
+
+        string esdtoolDir = "esdtool";
+        if (Project.Current.Game.Type == GameInfo.Game.EldenRing)
+        {
+            esdtoolDir = @"esdtool_er";
+        }
+        if (Project.Current.Game.Type == GameInfo.Game.ArmoredCore6)
+        {
+            esdtoolDir = @"esdtool_ac6";
+        }
+
         Process esdtool = new()
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = cwd + (Project.Current.Game.Type == GameInfo.Game.EldenRing ? @"esdtool_er\esdtool.exe" : @"esdtool\esdtool.exe"),
+                FileName = cwd + esdtoolDir + @"\esdtool.exe",
                 Arguments = arguments,
-                WorkingDirectory = cwd + (Project.Current.Game.Type == GameInfo.Game.EldenRing ? "esdtool_er" : "esdtool"),
+                WorkingDirectory = cwd + esdtoolDir,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true

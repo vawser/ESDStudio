@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <Version>0.6.2</Version>
@@ -71,6 +71,10 @@
       <Content Include="esdtool_er\**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="esdtool_ac6\**" />
+      <Content Include="esdtool_ac6\**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Content\Images\bb.jpg" />
       <Content Include="Content\Images\bb.jpg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -98,6 +102,9 @@
       <AdditionalFiles Include="DefaultDescriptions\DefaultESDDescriptions_sdt.toml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
+      <AdditionalFiles Include="DefaultDescriptions\DefaultESDDescriptions_ac6.toml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AdditionalFiles>
       <AdditionalFiles Include="DefaultDescriptions\DefaultMapDescriptions_bb.toml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
@@ -108,6 +115,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AdditionalFiles>
       <AdditionalFiles Include="DefaultDescriptions\DefaultMapDescriptions_sdt.toml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AdditionalFiles>
+      <AdditionalFiles Include="DefaultDescriptions\DefaultMapDescriptions_ac6.toml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
       <AdditionalFiles Include="Resources\EnumTemplates_bb.xml">
@@ -122,6 +132,9 @@
       <AdditionalFiles Include="Resources\EnumTemplates_sdt.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
+      <AdditionalFiles Include="Resources\EnumTemplates_ac6.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AdditionalFiles>
       <AdditionalFiles Include="Resources\FunctionDefinitions_bb.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
@@ -132,6 +145,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
       <AdditionalFiles Include="Resources\FunctionDefinitions_sdt.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AdditionalFiles>
+      <AdditionalFiles Include="Resources\FunctionDefinitions_ac6.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
       <None Remove="LICENSES\AvalonEdit_LICENSE.txt" />

@@ -325,6 +325,8 @@ public class BNDViewModel : ViewModelBase
             basePath = gameDirectory;
         }
         BNDPath = $"{basePath}\\{filePath}";
+        var BndBytes = File.ReadAllBytes(BNDPath);
+
         if (File.Exists(BNDPath))
         {
             if (Project.Current.Game.BNDVersion == GameInfo.BNDType.BND3)
@@ -336,10 +338,7 @@ public class BNDViewModel : ViewModelBase
             }
             else
             {
-                if (BND4.IsRead(BNDPath, out BND4 bnd))
-                {
-                    return bnd;
-                }
+                return BND4.Read(BndBytes);
             }
             
         }

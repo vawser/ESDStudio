@@ -19,7 +19,8 @@ public class GameInfo
         Bloodborne,
         DarkSoulsIII,
         Sekiro,
-        EldenRing
+        EldenRing,
+        ArmoredCore6
     }
     
     public enum BNDType
@@ -117,6 +118,18 @@ public class GameInfo
             BNDVersion = BNDType.BND4;
             Timestamp = "07D7R6";
         }
+        else if (text.EndsWith("armoredcore6.exe", StringComparison.OrdinalIgnoreCase) ||
+                    text.Equals("ac6", StringComparison.OrdinalIgnoreCase))
+        {
+            Type = Game.ArmoredCore6;
+            Name = "ac6";
+            FilePathStart = @"N:\FNR\data\INTERROOT_win64";
+            TalkPath = @"script\talk";
+            Compression = DCX.Type.DCX_KRAK_MAX;
+            IdLength = 9;
+            BNDVersion = BNDType.BND4;
+            Timestamp = "07D7R6";
+        }
         else
         {
             validGame = false;
@@ -137,7 +150,8 @@ public class GameInfo
                exePath.EndsWith("eboot.bin", StringComparison.OrdinalIgnoreCase) ||
                exePath.EndsWith("DarkSoulsIII.exe", StringComparison.OrdinalIgnoreCase) ||
                exePath.EndsWith("sekiro.exe", StringComparison.OrdinalIgnoreCase) ||
-               exePath.EndsWith("eldenring.exe", StringComparison.OrdinalIgnoreCase);
+               exePath.EndsWith("eldenring.exe", StringComparison.OrdinalIgnoreCase) ||
+               exePath.EndsWith("armoredcore6.exe", StringComparison.OrdinalIgnoreCase);
     }
 
     private void ReadDefaultMapDescriptions()
@@ -154,7 +168,13 @@ public class GameInfo
 
     public override string ToString()
     {
-        return Name;
+        var name = Name;
+
+        // Hack to use ER EsdTool with AC6 stuff
+        if (Name == "ac6")
+            name = "er";
+
+        return name;
     }
 
     public bool ESDDescriptionsContainsId(int esdId, string mapName)
